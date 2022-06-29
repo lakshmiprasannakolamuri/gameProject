@@ -1,8 +1,6 @@
 package com.GameProject;
 
 import java.util.HashSet;
-import java.util.Random;
-import java.lang.Math;
 import java.util.Scanner;
 
 public class TicTacToe
@@ -19,7 +17,13 @@ public class TicTacToe
 
 				{ '-', '|', '-', '|', '-' },
 				{ ' ', '|', ' ', '|', ' ' },
-				{ '-', '|', '-', '|', '-' } };
+				{ '-', '|', '-', '|', '-' },
+				{ ' ', '|', ' ', '|', ' ' },
+				{ '-', '|', '-', '|', '-' } 
+		};
+		
+		System.out.println("\n");
+		
 		print_board(g_board);
 
 		Scanner input = new Scanner(System.in);
@@ -27,37 +31,39 @@ public class TicTacToe
 		while (true)
 		{
 			System.out.println("Enter Values From 1-9:");
+			
 			int user_position = input.nextInt();
 
 			while (user_set.contains(user_position) || computer_set.contains(user_position))
 			{
-
-				System.out.println();
 				System.out.println("Retry Enter Values From 1-9");
 				user_position = input.nextInt();
 			}
 
 			print_holder(g_board, user_position, "YOU");
 
-			String result = check_winner();
-			if (result.length() > 0)
-			{
-				System.out.println(result);
-				break;
-			}
+
 
 			int computer_position = Generate_Random();
 			while (user_set.contains(computer_position) || computer_set.contains(computer_position))
 			{
-				System.out.println();
 				System.out.println("Retry Enter Values From 1-9");
 				computer_position = Generate_Random();
 			}
 
 			print_holder(g_board, computer_position, "COMPUTER");
+			
+			/**Check winner**/
+			String result = check_winner();
+			if (result != null)
+			{
+				System.out.println(result);
+				break;
+			}
 
 		}
 	}
+	
 
 	public static int Generate_Random()
 	{
@@ -73,6 +79,9 @@ public class TicTacToe
 
 	static String check_winner()
 	{
+		
+		String result = null;
+		
 		HashSet<Integer> r1 = new HashSet<Integer>();
 		r1.add(1);
 		r1.add(2);
@@ -115,20 +124,26 @@ public class TicTacToe
 		set.add(c3);
 		set.add(d1);
 		set.add(d2);
-		System.out.println("Random:" + new Random().nextInt(10));
-
+		
 		for (HashSet R : set)
 		{
 			if (user_set.containsAll(R))
-				return "YOU WIN";
-
+			{
+				result =  "YOU WIN";
+			}
 			else if (computer_set.containsAll(R))
-				return "YOU LOST";
+			{
+				result =  "YOU LOST";
+			}
+				
 
 		}
 		if (user_set.size() + computer_set.size() == 9)
-			return "DRAW";
-		return " ";
+		{
+			result =  "DRAW";
+		}
+			
+		return result;
 
 	}
 
@@ -151,12 +166,12 @@ public class TicTacToe
 	{
 		char symbol = 'X';
 
-		if (user.equals("you"))
+		if (user.equals("YOU"))
 		{
 			symbol = 'X';
 			user_set.add(position);
 
-		} else if (user.equals("computer"))
+		} else if (user.equals("COMPUTER"))
 		{
 			symbol = 'O';
 			computer_set.add(position);
@@ -198,6 +213,8 @@ public class TicTacToe
 
 		}
 		print_board(g_board);
+		
+		System.out.println("\n");
 
 	}
 
